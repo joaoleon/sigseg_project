@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block title %}Cadastro Realizado com Sucesso{% endblock %}
+
+{% block content %}
+<div class="container text-center" style="max-width: 600px; margin-top: 50px;">
+    <h2 style="color: green;">✅ Objeto Cadastrado com Sucesso!</h2>
+    <p>
+        As informações foram registradas com segurança e serão compartilhadas com as autoridades responsáveis.  
+        Sua colaboração é fundamental para a recuperação de bens, prevenção e repressão a crimes de roubo,  
+        utilizando estratégias baseadas nos dados coletados.
+    </p>
+
+    <div style="margin-top: 30px;">
+        <a href="{{ url_for('main.cadastrar_objeto_view') }}" class="btn btn-primary">Cadastrar outro objeto</a>
+        <a href="{{ url_for('main.home') }}" class="btn btn-secondary">Voltar para a página inicial</a>
+    </div>
+</div>
+{% endblock %}

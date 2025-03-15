@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}SIG-Seg - Plataforma Oficial de Monitoramento de Roubos no Brasil{% endblock %}
+
+{% block content %}
+<style>
+/* Estilização refinada para um visual institucional e elegante */
+body {
+    font-family: 'Arial', sans-serif;
+    color: #333;
+    background-color: #f8f9fa;
+}
+
+.hero {
+    background: linear-gradient(rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0.75)), 
+    url("{{ url_for('static', filename='images/banner-bg.jpg') }}") center/cover no-repeat;
+    color: white;
+    text-align: center;
+    padding: 160px 25px;
+    border-radius: 10px;
+    margin-bottom: 80px;
+}
+
+.hero h1 {
+    font-size: 3rem;
+    font-weight: 700;
+}
+
+.hero p {
+    font-size: 1.4rem;
+    opacity: 0.9;
+}
+
+.btn-primary, .btn-warning {
+    padding: 14px 28px;
+    font-size: 1.2rem;
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    transform: scale(1.07);
+}
+
+.card-feature {
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.15);
+    background: white;
+    transition: transform 0.3s ease;
+}
+
+.card-feature:hover {
+    transform: translateY(-10px);
+}
+
+h2 {
+    font-weight: 700;
+}
+
+.testimonial {
+    background: #ffffff;
+    border-left: 6px solid #0d6efd;
+    padding: 25px;
+    border-radius: 10px;
+    font-size: 1.2rem;
+    margin-bottom: 40px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.text-muted {
+    font-size: 1.1rem;
+    opacity: 0.85;
+}
+</style>
+
+<section class="hero container-fluid">
+    <div class="container text-center text-white">
+        <h1>Monitore e Recupere Objetos Roubados com o SIG-Seg</h1>
+        <p class="lead mt-3">O SIG-Seg permite que cidadãos registrem objetos roubados de forma segura, possibilitando o monitoramento por autoridades e contribuindo para a formulação de políticas públicas de segurança baseadas na realidade de cada região.</p>
+        <div class="cta-buttons mt-4">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-warning btn-lg fw-bold">
+                <i class="bi bi-pencil-square"></i> Cadastre-se Agora
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline-light btn-lg fw-bold">
+                <i class="bi bi-box-arrow-in-right"></i> Acesse sua Conta
+            </a>
+        </div>
+    </div>
+</section>
+
+<section class="info-section container mb-5">
+    <h2 class="text-center mb-4">Por que usar o SIG-Seg?</h2>
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card-feature text-center">
+                <i class="bi bi-pencil-square display-4 text-primary"></i>
+                <h4 class="mt-3">Cadastro Simples e Eficiente</h4>
+                <p>Registre rapidamente objetos roubados, anexando fotos e localização para rastreamento.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-feature text-center">
+                <i class="bi bi-shield-fill display-4 text-danger"></i>
+                <h4 class="mt-3">Apoio às Forças Policiais</h4>
+                <p>Fornece inteligência para a atuação das polícias civis e militares no combate ao crime.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card-feature text-center">
+                <i class="bi bi-bar-chart-fill display-4 text-warning"></i>
+                <h4 class="mt-3">Monitoramento Nacional</h4>
+                <p>Estatísticas, clusters criminais e mapeamento de roubos para otimizar ações estratégicas.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="testimonial-section container mb-5">
+    <h2 class="text-center mb-4">O que nossos usuários dizem</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="testimonial">
+                <p><strong>“Recuperei minha moto em menos de uma semana com a ajuda do SIG-Seg!”</strong></p>
+                <small>- João V., Belo Horizonte</small>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="testimonial">
+                <p><strong>“Com o SIG-Seg, a polícia local teve acesso imediato às informações do meu roubo.”</strong></p>
+                <small>- Marina T., Recife</small>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="container text-center my-5">
+    <h2>Dúvidas sobre o SIG-Seg?</h2>
+    <p class="mb-4">Saiba mais sobre como participar e ajudar na segurança pública.</p>
+    <a href="{{ url_for('main.faq') }}" class="btn btn-primary btn-lg">
+        <i class="bi bi-question-circle"></i> Perguntas Frequentes
+    </a>
+</section>
+{% endblock %}

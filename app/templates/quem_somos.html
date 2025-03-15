@@ -1,0 +1,154 @@
+{% extends "base.html" %}
+
+{% block title %}Quem Somos Nós? - SIG-Seg{% endblock %}
+
+{% block extra_styles %}
+<style>
+  /* Container principal */
+.content {
+    max-width: 900px;
+    background-color: #FFFFFF;
+    padding: 40px;
+    margin: 40px auto;
+    border-radius: 12px;
+    text-align: left;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease-in-out;
+}
+
+/* Efeito leve ao passar o mouse */
+.content:hover {
+    transform: translateY(-5px);
+}
+
+/* Títulos principais */
+.content h1 {
+    font-size: 2.8em;
+    color: #003366;
+    text-align: center;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* Subtítulo motivacional */
+.subtitle {
+    text-align: center;
+    font-size: 1.4em;
+    color: #555;
+    font-style: italic;
+    margin-bottom: 30px;
+}
+
+/* Títulos das seções */
+.content h2 {
+    font-size: 2em;
+    color: #1E3A5F;
+    margin-top: 30px;
+    padding-bottom: 8px;
+    border-bottom: 3px solid #00509E; /* Linha sutil abaixo */
+}
+
+/* Parágrafos */
+.content p {
+    font-size: 1.2em;
+    color: #4A4A4A;
+    line-height: 1.8;
+}
+
+/* Lista de valores */
+.content ul {
+    list-style: none;
+    padding: 0;
+}
+
+.content ul li {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 15px;
+    display: flex;
+    align-items: center;
+}
+
+/* Ícones para valores */
+.content ul li::before {
+    content: "✔";
+    color: #00509E;
+    font-size: 1.4em;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+/* Bloco da equipe */
+.team-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+/* Estilização dos membros da equipe */
+.team-member {
+    background: #f4f4f4;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    width: 200px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.team-member img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+
+.team-member h3 {
+    font-size: 1.3em;
+    color: #003366;
+}
+
+.team-member p {
+    font-size: 1em;
+    color: #555;
+}
+
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Quem Somos Nós?</h1>
+    <p class="subtitle">Unindo tecnologia e segurança para um Brasil mais protegido.</p>
+
+    <p>O <strong>SIG-Seg</strong> é uma plataforma inovadora que utiliza inteligência artificial e análise de dados para monitorar, rastrear e recuperar bens roubados. Nosso objetivo é tornar o Brasil mais seguro por meio da tecnologia e da colaboração entre cidadãos e autoridades.</p>
+    
+    <h2>Nossa Missão</h2>
+    <p>Facilitar o rastreamento, recuperação e prevenção de crimes contra o patrimônio, promovendo mais segurança e inteligência para a sociedade e forças de segurança.</p>
+
+    <h2>Nossa Visão</h2>
+    <p>Ser a principal plataforma de rastreamento de bens roubados no Brasil, reduzindo perdas e fortalecendo a confiança da população na segurança pública.</p>
+
+    <h2>Nossos Valores</h2>
+    <ul>
+        <li><strong>🔒 Segurança:</strong> Tecnologia a serviço do monitoramento de crimes patrimoniais.</li>
+        <li><strong>⚡ Eficiência:</strong> Uso de tecnologias avançadas para responder às necessidades da segurança pública.</li>
+        <li><strong>🚀 Inovação:</strong> Inteligência artificial e análise de dados aplicadas à segurança pública.</li>
+        <li><strong>🤝 Colaboração:</strong> Integração entre sociedade, empresas e forças de segurança.</li>
+    </ul>
+
+    <h2>Nossa Equipe</h2>
+    <p>O SIG-Seg é composto por uma equipe multidisciplinar comprometida com a inovação na segurança pública. Conheça alguns de nossos especialistas:</p>
+
+    <div class="team-container">
+        <div class="team-member">
+            <img src="/static/images/user1.jpg" alt="Membro 1">
+            <h3>João Paulo Pereira Leonardo </h3>
+            <p>Especialista em Tecnologia e Segurança Pública </p>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

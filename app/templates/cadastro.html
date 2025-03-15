@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar - SIG-Seg{% endblock %}
+
+{% block content %}
+<div class="vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card shadow-lg border-0 rounded-4 p-4" style="background: #212529; color: white;">
+                <div class="card-body">
+                    <h2 class="text-center fw-bold mb-3">
+                        <i class="bi bi-person-plus"></i> Criar Conta
+                    </h2>
+                    <p class="text-center text-light">Registre-se para monitorar seus objetos e contribuir para a segurança pública.</p>
+
+                    <form method="POST" action="{{ url_for('auth.user_register') }}">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label text-light">Nome</label>
+                            <input type="text" name="nome" class="form-control bg-dark text-light border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label text-light">E-mail</label>
+                            <input type="email" name="email" class="form-control bg-dark text-light border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label text-light">Senha</label>
+                            <input type="password" name="senha" class="form-control bg-dark text-light border-secondary" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefone" class="form-label text-light">Telefone</label>
+                            <input type="text" name="telefone" class="form-control bg-dark text-light border-secondary">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cidade" class="form-label text-light">Cidade</label>
+                                <input type="text" name="cidade" class="form-control bg-dark text-light border-secondary">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="estado" class="form-label text-light">Estado</label>
+                                <input type="text" name="estado" class="form-control bg-dark text-light border-secondary">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary w-100 py-2">Registrar</button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Já tem uma conta? <a href="{{ url_for('auth.user_login') }}" class="text-primary">Faça login</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

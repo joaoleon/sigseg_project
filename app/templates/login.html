@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+
+{% block title %}Login - SIG-Seg{% endblock %}
+
+{% block content %}
+<div class="login-background vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card shadow-lg border-0 login-card">
+                <div class="card-body p-4">
+                    <h2 class="text-center fw-bold">
+                        <i class="bi bi-shield-lock"></i> Login
+                    </h2>
+                    <p class="text-center text-muted">Acesse sua conta e contribua para a segurança pública.</p>
+
+                    <form id="loginForm">
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" id="email" name="email" class="form-control" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" id="senha" name="senha" class="form-control" required>
+                        </div>
+
+                        <button type="submit" class="btn btn-dark w-100 py-2">Entrar</button>
+
+                        <p id="loginError" class="text-danger mt-2 text-center" style="display: none;"></p>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Ainda não tem conta? <a href="{{ url_for('auth.register') }}">Cadastre-se</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script>
+    document.getElementById("loginForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    let email = document.getElementById("email").value.trim();
+    let senha = document.getElementById("senha").value.trim();
+
+    try {
+        let response = await fetch("/auth/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, senha }),
+            credentials: "include"  // 🔹 Importante: Permite enviar e receber cookies
+        });
+
+        let data = await response.json();
+
+        if (response.ok) {
+            console.log("✅ Login bem-sucedido! Redirecionando...");
+            window.location.href = "/auth/perfil";  // 🔹 Redirecionamento sem usar token no localStorage
+        } else {
+            alert(data.erro || "Erro ao fazer login.");
+        }
+    } catch (error) {
+        console.error("Erro na requisição de login:", error);
+        alert("Erro ao tentar fazer login.");
+    }
+});
+
+    // 🔥 Verifica se o usuário já está logado e redireciona para o perfil
+    document.addEventListener("DOMContentLoaded", function () {
+    fetch("/auth/perfil", {
+        method: "GET",
+        credentials: "include"  // 🔹 Permite que os cookies HTTP-Only sejam enviados automaticamente
+    })
+    .then(response => {
+        if (response.ok) {
+            window.location.href = "/auth/perfil";
+        }
+    })
+    .catch(error => console.error("Erro ao verificar sessão:", error));
+});
+
+</script>
+{% endblock %}

@@ -1,0 +1,113 @@
+{% extends "base.html" %}
+
+{% block title %}Contato - SIG-Seg{% endblock %}
+
+{% block extra_styles %}
+<style>
+    /* Conteúdo Principal */
+    .content {
+        max-width: 900px;
+        background-color: #FFFFFF;
+        padding: 40px;
+        margin: 30px auto;
+        border-radius: 10px;
+        text-align: left;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        font-family: 'Arial', sans-serif;
+    }
+    .content h1 {
+        font-size: 2.5em;
+        color: #003366; /* Azul escuro consistente com o projeto */
+        margin-bottom: 15px;
+        font-family: 'Montserrat', sans-serif;
+    }
+    .content p {
+        font-size: 1.15em;
+        color: #4A4A4A;
+        margin-bottom: 20px;
+        line-height: 1.6;
+    }
+    
+    /* Formulário de Contato */
+    .contact-form {
+        display: flex;
+        flex-direction: column;
+    }
+    .contact-form label {
+        font-size: 1em;
+        margin-bottom: 5px;
+        color: #003366; /* Azul escuro consistente com o projeto */
+    }
+    .contact-form input,
+    .contact-form textarea {
+        font-size: 1em;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #CCC;
+        border-radius: 5px;
+        width: 100%;
+    }
+    .contact-form input:focus,
+    .contact-form textarea:focus {
+        outline: none;
+        border-color: #003366;
+        box-shadow: 0 0 5px rgba(0, 51, 102, 0.5);
+    }
+    .contact-form button {
+        padding: 15px;
+        background-color: #003366; /* Azul escuro consistente */
+        color: #FFFFFF;
+        font-size: 1.1em;
+        font-weight: bold;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+    }
+    .contact-form button:hover {
+        background-color: #00509E; /* Azul mais claro ao passar o mouse */
+    }
+    .feedback {
+        margin-top: 20px;
+        padding: 10px;
+        border-radius: 5px;
+        text-align: center;
+        font-weight: bold;
+    }
+    .feedback.success {
+        background-color: #A9D18E; /* Verde */
+        color: #003366;
+    }
+    .feedback.error {
+        background-color: #FFCCCC; /* Vermelho claro */
+        color: #990000;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="content">
+    <h1>Contato</h1>
+    <p>Se você tiver dúvidas, sugestões ou precisar de mais informações sobre o SIG-Seg, entre em contato conosco. Estamos aqui para ajudar!</p>
+    
+    <form class="contact-form" action="/enviar-mensagem" method="post">
+        <label for="nome">Nome</label>
+        <input type="text" id="nome" name="nome" aria-label="Seu nome" required>
+
+        <label for="email">E-mail</label>
+        <input type="email" id="email" name="email" aria-label="Seu e-mail" required>
+
+        <label for="mensagem">Mensagem</label>
+        <textarea id="mensagem" name="mensagem" rows="5" aria-label="Sua mensagem" required></textarea>
+
+        <button type="submit">Enviar Mensagem</button>
+    </form>
+
+    <!-- Mensagem de feedback -->
+    {% if feedback_message %}
+    <div class="feedback {{ feedback_class }}">
+        {{ feedback_message }}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Perguntas Frequentes - SIG-Seg{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Perguntas Frequentes (FAQ)</h2>
+    <p class="text-center text-muted">Dúvidas sobre o SIG-Seg? Veja as respostas para as perguntas mais comuns.</p>
+
+    <div class="accordion" id="faqAccordion">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                    📌 Como posso registrar um objeto roubado?
+                </button>
+            </h2>
+            <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Basta clicar em "Registrar Objeto", preencher as informações e anexar fotos. Seu registro ajudará na recuperação do item!
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                    🧠 Como a Inteligência Artificial ajuda na recuperação?
+                </button>
+            </h2>
+            <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    A IA analisa padrões de roubo e cruza informações com dados de registros e denúncias para identificar objetos recuperados.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                    🔔 Serei notificado se meu item for encontrado?
+                </button>
+            </h2>
+            <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Sim! Caso o seu item seja localizado, você receberá um alerta e poderá buscá-lo na delegacia mais próxima.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

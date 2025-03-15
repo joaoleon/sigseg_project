@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Meus Objetos - SIG-Seg{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <h2 class="fw-bold text-primary">📌 Meus Objetos</h2>
+        <input type="text" id="searchBar" class="form-control w-25 rounded shadow-sm" 
+               placeholder="🔍 Buscar objetos..." onkeyup="filterTable()">
+    </div>
+
+    {% if objetos %}
+        <div class="table-responsive rounded shadow-sm">
+            <table class="table table-hover align-middle">
+                <thead class="table-primary text-dark">
+                    <tr>
+                        <th>Foto</th>
+                        <th>Nome</th>
+                        <th>Tipo</th>
+                        <th>Local</th>
+                        <th>Data</th>
+                        <th>Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for objeto in objetos %}
+                    <tr>
+                        <td>
+                            {% if objeto.foto %}
+                            <img src="{{ url_for('static', filename='uploads/' + objeto.foto) }}" 
+                                alt="Imagem do objeto" class="rounded img-thumbnail shadow-sm objeto-img">
+                            {% else %}
+                                <span class="text-muted">Sem foto</span>
+                            {% endif %}
+                        </td>
+                        <td>{{ objeto.nome }}</td>
+                        <td>{{ objeto.tipo_objeto }}</td>
+                        <td>{{ objeto.cidade }}, {{ objeto.estado }}</td>
+                        <td>{{ objeto.data_cadastro if objeto.data_cadastro else "Sem data" }}</td>
+                        <td>
+                            <div class="d-flex gap-2">
+                                <a href="{{ url_for('main.ver_objeto', objeto_id=objeto.id) }}" 
+                                   class="btn btn-primary btn-sm rounded-pill px-3">
+                                   📄 Ver
+                                </a>
+                                <a href="{{ url_for('objetos.atualizar_objeto_route', objeto_id=objeto.id) }}" 
+                                   class="btn btn-secondary btn-sm rounded-pill px-3">
+                                   ✏️ Editar
+                                </a>
+                                <form action="{{ url_for('objetos.excluir_objeto_route', objeto_id=objeto.id) }}" 
+                                      method="POST">
+                                    <button type="submit" class="btn btn-danger btn-sm rounded-pill px-3"
+                                        onclick="return confirmDelete();">
+                                        🗑️ Excluir
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <!-- Paginação -->
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center">
+                {% if pagina_atual > 1 %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.meus_objetos', pagina=pagina_atual-1) }}">⬅️ Anterior</a>
+                    </li>
+                {% endif %}
+                <li class="page-item active">
+                    <span class="page-link">📍 Página {{ pagina_atual }}</span>
+                </li>
+                {% if pagina_atual < paginas_totais %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('main.meus_objetos', pagina=pagina_atual+1) }}">Próximo ➡️</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    {% else %}
+        <div class="alert alert-warning text-center">
+            ⚠️ Nenhum objeto cadastrado no momento.
+        </div>
+    {% endif %}
+</div>
+
+<!-- Importa o JavaScript -->
+<script src="{{ url_for('static', filename='js/scripts.js') }}"></script>
+{% endblock %}

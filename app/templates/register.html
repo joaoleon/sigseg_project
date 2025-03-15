@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Registrar - SIG-Seg{% endblock %}
+
+{% block content %}
+<div class="register-background vh-100 d-flex align-items-center justify-content-center">
+    <div class="row justify-content-center w-100">
+        <div class="col-md-6 col-lg-5 col-xl-4">
+            <div class="card shadow-lg border-0 register-card">
+                <div class="card-body p-4">
+                    <h2 class="text-center fw-bold">
+                        <i class="bi bi-person-plus"></i> Criar Conta
+                    </h2>
+                    <p class="text-center text-muted">Registre-se para monitorar seus objetos e contribuir para a segurança pública.</p>
+
+                    <!-- 🔹 Exibir apenas mensagens de erro do Flask -->
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                {% if category == 'danger' %}  <!-- Exibir apenas erros -->
+                                    <div class="alert alert-danger text-center" role="alert">
+                                        {{ message }}
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('auth.register') }}" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="nome" class="form-label">Nome</label>
+                            <input type="text" name="nome" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="email" class="form-label">E-mail</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cpf" class="form-label">CPF</label>
+                            <input type="text" name="cpf" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="senha" class="form-label">Senha</label>
+                            <input type="password" name="senha" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="telefone" class="form-label">Telefone</label>
+                            <input type="text" name="telefone" class="form-control">
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="cidade" class="form-label">Cidade</label>
+                                <input type="text" name="cidade" class="form-control">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="estado" class="form-label">Estado</label>
+                                <input type="text" name="estado" class="form-control">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-register w-100 py-2">Registrar</button>
+                    </form>
+
+                    <p class="text-center mt-3">
+                        Já tem uma conta? <a href="{{ url_for('auth.login') }}" class="text-primary">Faça login</a>.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- 🔹 Scripts para máscaras de CPF e telefone -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.inputmask/5.0.7/jquery.inputmask.min.js"></script>
+<script>
+    $(document).ready(function(){
+        $("input[name='cpf']").inputmask("999.999.999-99");
+        $("input[name='telefone']").inputmask("(99) 99999-9999");
+    });
+</script>
+
+{% endblock %}
