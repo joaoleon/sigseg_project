@@ -4,109 +4,163 @@
 
 {% block extra_styles %}
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+        }
+
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h3 {
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        label {
+            font-weight: bold;
+        }
+
+        #map {
+            height: 350px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .upload-container {
+            text-align: center;
+        }
+
+        #preview-container {
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        #preview {
+            max-width: 220px;
+            height: auto;
+            border-radius: 5px;
+            border: 2px dashed #ccc;
+            padding: 5px;
+        }
+
+        .submit-button {
+            width: 100%;
+            background: black;
+            color: white;
+            padding: 12px;
+            border: none;
+            font-size: 1.1rem;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
-    <div class="container">
-        <h2>Registro de Objetos</h2>
-        <p>Registre objetos roubados ou perdidos para auxiliar na recuperação e garantir maior segurança.</p>
+<div class="container">
+    <h2 class="text-center">Registro de Objetos</h2>
+    <p class="text-center">Registre objetos roubados ou perdidos para auxiliar na recuperação e garantir maior segurança.</p>
 
-       
-        <form id="registerForm" action="{{ url_for('main.cadastrar_objeto_view') }}" method="POST" enctype="multipart/form-data">
-            
-            <!-- 🔹 Seção 1: Informações do Objeto -->
-            <div class="form-section">
-                <h3>Detalhes do Objeto</h3>
-                <label for="nome">Nome do Item</label>
-                <input type="text" name="nome" id="nome" placeholder="Ex.: Celular, Carteira" required>
+    <form id="registerForm" action="{{ url_for('main.cadastrar_objeto_view') }}" method="POST" enctype="multipart/form-data">
+        
+        <!-- 🔹 Seção 1: Informações do Objeto -->
+        <div class="form-section">
+            <h3>Detalhes do Objeto</h3>
+            <label for="nome">Nome do Item</label>
+            <input type="text" name="nome" id="nome" class="form-control" placeholder="Ex.: Celular, Carteira" required>
 
-                <label for="tipo_objeto">Tipo de Objeto</label>
-                <select name="tipo_objeto" id="tipo_objeto" required onchange="atualizarCampos()">
-                    <option value="" disabled selected>Selecione o tipo de objeto</option>
-                    <option value="Celular">Celular</option>
-                    <option value="Carro">Carro</option>
-                    <option value="Moto">Moto</option>
-                    <option value="Caminhão">Caminhão</option>
-                    <option value="Carga">Carga</option>
-                    <option value="Outro">Outro</option>
-                </select>
+            <label for="tipo_objeto">Tipo de Objeto</label>
+            <select name="tipo_objeto" id="tipo_objeto" class="form-select" required>
+                <option value="" disabled selected>Selecione o tipo de objeto</option>
+                <option value="Celular">Celular</option>
+                <option value="Carro">Carro</option>
+                <option value="Moto">Moto</option>
+                <option value="Caminhão">Caminhão</option>
+                <option value="Carga">Carga</option>
+                <option value="Outro">Outro</option>
+            </select>
+        </div>
+        <!-- 🔹 Seção 2: Circunstâncias da Ocorrência -->
+        <div class="form-section">
+            <h3>Circunstâncias da Ocorrência</h3>
 
-                <!-- 🔹 Transportadora (Aparece apenas se for Carga/Caminhão) -->
-                <div id="campo_transportadora" style="display: none;">
-                    <label for="transportadora">Transportadora</label>
-                    <input type="text" name="transportadora" id="transportadora" placeholder="Nome da transportadora">
-                </div>
+            <label for="forma_subtracao">Forma de Subtração</label>
+            <select name="forma_subtracao" id="forma_subtracao" class="form-select" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="Furto">Furto</option>
+                <option value="Assalto à mão armada">Assalto à mão armada</option>
+                <option value="Arrombamento">Arrombamento</option>
+                <option value="Outro">Outro</option>
+            </select>
 
-                <label for="numero_serie">Número de Série / Chassi</label>
-                <input type="text" name="numero_serie" id="numero_serie" placeholder="Se aplicável">
+            <label for="meio_utilizado">Meio Utilizado</label>
+            <select name="meio_utilizado" id="meio_utilizado" class="form-select" required>
+                <option value="" disabled selected>Selecione</option>
+                <option value="A pé">A pé</option>
+                <option value="Moto">Moto</option>
+                <option value="Carro">Carro</option>
+                <option value="Bicicleta">Bicicleta</option>
+                <option value="Outro">Outro</option>
+            </select>
+
+            <label for="boletim_ocorrencia">Número do Boletim de Ocorrência</label>
+            <input type="text" name="boletim_ocorrencia" id="boletim_ocorrencia" class="form-control" placeholder="Se aplicável">
+
+            <!-- 🔹 Novo: Data e Hora da Ocorrência -->
+            <label for="data_ocorrencia">Data da Ocorrência</label>
+            <input type="date" name="data_ocorrencia" id="data_ocorrencia" class="form-control" required>
+
+            <label for="hora_ocorrencia">Hora da Ocorrência</label>
+            <input type="time" name="hora_ocorrencia" id="hora_ocorrencia" class="form-control" required>
+        </div>
+        <!-- 🔹 Seção 3: Localização -->
+        <div class="form-section">
+            <h3>Localização da Ocorrência</h3>
+            <p><strong>Clique no mapa para selecionar o local do ocorrido.</strong></p>
+            <div id="map"></div>
+
+            <label for="rua">Rua</label>
+            <input type="text" name="rua" id="rua" class="form-control" required>
+
+            <label for="bairro">Bairro</label>
+            <input type="text" name="bairro" id="bairro" class="form-control" required>
+
+            <label for="cidade">Cidade</label>
+            <input type="text" name="cidade" id="cidade" class="form-control" required>
+
+            <label for="estado">Estado</label>
+            <input type="text" name="estado" id="estado" class="form-control" required>
+
+            <input type="hidden" name="latitude" id="latitude">
+            <input type="hidden" name="longitude" id="longitude">
+        </div>
+
+        <!-- 🔹 Seção de Upload de Imagem -->
+        <div class="form-section upload-container">
+            <h3>Foto do Item</h3>
+            <input type="file" name="foto" id="foto" accept="image/jpeg, image/png" class="form-control" onchange="previewImagem()">
+            <div id="preview-container">
+                <img id="preview" style="display: none;">
             </div>
+        </div>
 
-            <!-- 🔹 Seção 2: Dados da Ocorrência -->
-            <div class="form-section">
-                <h3>Dados da Ocorrência</h3>
-                
-                <label for="forma_subtracao">Forma de Subtração</label>
-                <select name="forma_subtracao" id="forma_subtracao" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option value="Furto">Furto</option>
-                    <option value="Assalto à mão armada">Assalto à mão armada</option>
-                    <option value="Arrombamento">Arrombamento</option>
-                    <option value="Outro">Outro</option>
-                </select>
-
-                <label for="meio_utilizado">Meio Utilizado</label>
-                <select name="meio_utilizado" id="meio_utilizado" required>
-                    <option value="" disabled selected>Selecione</option>
-                    <option value="A pé">A pé</option>
-                    <option value="Moto">Moto</option>
-                    <option value="Carro">Carro</option>
-                    <option value="Bicicleta">Bicicleta</option>
-                    <option value="Outro">Outro</option>
-                </select>
-
-                <label for="boletim_ocorrencia">Número do Boletim de Ocorrência</label>
-                <input type="text" name="boletim_ocorrencia" id="boletim_ocorrencia" placeholder="Se disponível">
-
-                <label for="data_ocorrencia">Data da Ocorrência</label>
-                <input type="date" name="data_ocorrencia" id="data_ocorrencia" required>
-
-                <label for="hora_ocorrencia">Hora da Ocorrência</label>
-                <input type="time" name="hora_ocorrencia" id="hora_ocorrencia" required>
-            </div>
-
-            <!-- 🔹 Seção 3: Localização -->
-            <div class="form-section">
-                <h3>Localização da Ocorrência</h3>
-                <p>Clique no mapa para selecionar a localização onde ocorreu o crime.</p>
-                <div id="map"></div>
-
-                <label for="rua">Rua</label>
-                <input type="text" name="rua" id="rua" required>
-
-                <label for="bairro">Bairro</label>
-                <input type="text" name="bairro" id="bairro" required>
-
-                <label for="cidade">Cidade</label>
-                <input type="text" name="cidade" id="cidade" required>
-
-                <label for="estado">Estado</label>
-                <input type="text" name="estado" id="estado" required>
-
-                <label for="cep">CEP</label>
-                <input type="text" name="cep" id="cep" placeholder="00000-000">
-
-                <input type="hidden" name="latitude" id="latitude">
-                <input type="hidden" name="longitude" id="longitude">
-            </div>
-<!-- 🔹 Seção de Upload de Imagem -->
-<div class="form-section">
-    <h3>Foto do Item</h3>
-    <input type="file" name="foto" id="foto" accept="image/jpeg, image/png" onchange="previewImagem()">
-    <div id="preview-container">
-        <img id="preview" style="display: none; max-width: 150px; height: auto; border: 1px solid #ccc; padding: 5px;">
-    </div>
+        <button type="submit" class="submit-button">Registrar Item</button>
+    </form>
 </div>
+{% endblock %}
 
+{% block extra_scripts %}
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script>
     function previewImagem() {
         var file = document.getElementById("foto").files[0];
@@ -123,73 +177,30 @@
             preview.style.display = "none"; // Oculta a imagem se nenhum arquivo for selecionado
         }
     }
+
+    var map = L.map('map').setView([-15.7801, -47.9292], 5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '© OpenStreetMap contributors'
+    }).addTo(map);
+
+    var marker;
+    map.on('click', function(e) {
+        var lat = e.latlng.lat;
+        var lng = e.latlng.lng;
+        if (marker) { map.removeLayer(marker); }
+        marker = L.marker([lat, lng]).addTo(map);
+        document.getElementById("latitude").value = lat;
+        document.getElementById("longitude").value = lng;
+
+        fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById("rua").value = data.address.road || "";
+                document.getElementById("bairro").value = data.address.suburb || "";
+                document.getElementById("cidade").value = data.address.city || "";
+                document.getElementById("estado").value = data.address.state || "";
+            })
+            .catch(error => console.error("Erro ao obter endereço:", error));
+    });
 </script>
-
-            <button type="submit" class="cta-button submit-button">Registrar Item</button>
-        </form>
-    </div>
-
-
-
-{% endblock %}
-
-{% block extra_scripts %}
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-    <script>
-        function previewImagem() {
-            var file = document.getElementById("foto").files[0];
-            var preview = document.getElementById("preview");
-
-            if (file) {
-                var reader = new FileReader();
-                reader.onload = function(e) {
-                    preview.src = e.target.result;
-                    preview.style.display = "block";
-                }
-                reader.readAsDataURL(file);
-            }
-        }
-
-        function atualizarCampos() {
-            var tipoObjeto = document.getElementById("tipo_objeto").value;
-            var campoTransportadora = document.getElementById("campo_transportadora");
-
-            campoTransportadora.style.display = (tipoObjeto === "Caminhão" || tipoObjeto === "Carga") ? "block" : "none";
-        }
-
-        var map = L.map('map').setView([-15.7801, -47.9292], 5);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-        }).addTo(map);
-
-        var marker;
-
-        map.on('click', function(e) {
-            var lat = e.latlng.lat;
-            var lng = e.latlng.lng;
-
-            if (marker) {
-                map.removeLayer(marker);
-            }
-            marker = L.marker([lat, lng]).addTo(map);
-
-            document.getElementById("latitude").value = lat;
-            document.getElementById("longitude").value = lng;
-
-            fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&zoom=18&addressdetails=1`)
-                .then(response => response.json())
-                .then(data => {
-                    console.log("Dados do endereço:", data);
-
-                    if (data.address) {
-                        document.getElementById("rua").value = data.address.road || "";
-                        document.getElementById("bairro").value = data.address.suburb || data.address.neighbourhood || "";
-                        document.getElementById("cidade").value = data.address.city || data.address.town || data.address.village || "";
-                        document.getElementById("estado").value = data.address.state || "";
-                        document.getElementById("cep").value = data.address.postcode || "";
-                    }
-                })
-                .catch(error => console.error("Erro ao obter endereço:", error));
-        });
-    </script>
 {% endblock %}

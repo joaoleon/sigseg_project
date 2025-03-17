@@ -3,43 +3,10 @@
 {% block title %}Monitoramento - SIG-Seg{% endblock %}
 
 {% block extra_styles %}
-    <!-- Estilos do Leaflet -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.css" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet.markercluster/dist/MarkerCluster.Default.css" />
-    
-    <!-- Estilos Customizados -->
-    <style>
-        .dashboard-container {
-            margin-top: 20px;
-        }
-
-        .stats-card {
-            background: #ffffff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            font-size: 1.1rem;
-            font-weight: bold;
-            color: #333;
-        }
-
-        .chart-container {
-            margin-top: 20px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #map {
-            height: 500px;
-            margin-top: 20px;
-            border-radius: 8px;
-            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
 {% endblock %}
 
 {% block content %}
@@ -47,123 +14,123 @@
     <h2 class="text-center mt-4">📊 Monitoramento de Ocorrências</h2>
 
     <!-- 📌 Estatísticas Gerais -->
-    <div class="row dashboard-container">
+    <div class="row dashboard-container text-center">
+        {% for key, value in stats.items() %}
         <div class="col-md-4 mb-3">
             <div class="stats-card">
-                <p>Total de Ocorrências</p>
-                <h4>{{ stats.total_ocorrencias }}</h4>
+                <p>{{ key.replace('_', ' ') | title }}</p>
+                <h4>{{ value }}</h4>
             </div>
         </div>
-        <div class="col-md-4 mb-3">
-            <div class="stats-card">
-                <p>Tipo Mais Comum</p>
-                <h4>{{ stats.tipo_mais_comum }}</h4>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="stats-card">
-                <p>Cidade Mais Afetada</p>
-                <h4>{{ stats.cidade_mais_afetada }}</h4>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="stats-card">
-                <p>Horário Mais Comum</p>
-                <h4>{{ stats.horario_mais_comum }}</h4>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="stats-card">
-                <p>Forma Mais Comum</p>
-                <h4>{{ stats.forma_subtracao_mais_comum }}</h4>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="stats-card">
-                <p>Meio Mais Utilizado</p>
-                <h4>{{ stats.meio_utilizado_mais_comum }}</h4>
-            </div>
-        </div>
+        {% endfor %}
     </div>
 
     <!-- 📊 Gráficos Interativos -->
-    <div class="chart-container">
-        <h3>📅 Ocorrências por Mês</h3>
-        <div id="chartOcorrencias"></div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>📅 Ocorrências por Mês</h3>
+                <div id="chartOcorrencias"></div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="chart-container">
+                <h3>🕒 Ocorrências por Horário</h3>
+                <div id="chartHorarios"></div>
+            </div>
+        </div>
     </div>
 
-    <div class="chart-container">
-        <h3>🕒 Ocorrências por Horário</h3>
-        <div id="chartHorarios"></div>
+    <div class="chart-container mt-4">
+        <h3>🚗 Tipo de Objeto Mais Roubado</h3>
+        <div id="chartObjetos"></div>
     </div>
 
     <!-- 🗺️ Mapa Interativo -->
     <h3 class="mt-4">🌍 Mapa de Calor e Clusterização</h3>
     <div id="map"></div>
+
+    <!-- 📌 Últimas Ocorrências -->
+    <h3 class="mt-4">📋 Últimas Ocorrências Registradas</h3>
+    <div class="recent-occurrences">
+        {% if ultimas_ocorrencias %}
+            {% for ocorrencia in ultimas_ocorrencias %}
+            <div class="occurrence-item">
+                <img src="{{ ocorrencia.foto }}" alt="Imagem do objeto">
+                <div>
+                    <p><strong>Objeto:</strong> {{ ocorrencia.nome }}</p>
+                    <p><strong>Data:</strong> {{ ocorrencia.data_ocorrencia }}</p>
+                    <p><strong>Local:</strong> {{ ocorrencia.cidade }} - {{ ocorrencia.estado }}</p>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p class="text-center">🚫 Nenhuma ocorrência registrada recentemente.</p>
+        {% endif %}
+    </div>
 </div>
 {% endblock %}
 
 {% block extra_scripts %}
-    <!-- Importando os Scripts Necessários -->
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
     <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <script src="https://unpkg.com/leaflet.heat/dist/leaflet-heat.js"></script>
     <script src="https://unpkg.com/leaflet.markercluster/dist/leaflet.markercluster.js"></script>
 
     <script>
-        // 📊 Dados de ocorrências por mês
-        var ocorrenciasPorMes = JSON.parse('{{ ocorrencias_por_mes|tojson }}');
-        var labelsMes = Object.keys(ocorrenciasPorMes);
-        var valuesMes = Object.values(ocorrenciasPorMes);
-
-        Plotly.newPlot('chartOcorrencias', [{
-            x: labelsMes,
-            y: valuesMes,
-            type: 'scatter',
-            mode: 'lines+markers',
-            line: { shape: 'spline' },
-            marker: { color: 'blue' }
-        }], {
-            title: 'Ocorrências por Mês',
-            xaxis: { title: 'Mês' },
-            yaxis: { title: 'Número de Ocorrências' }
-        });
-
-        // 📊 Dados de ocorrências por horário
-        var ocorrenciasPorHora = JSON.parse('{{ ocorrencias_por_hora|tojson }}');
-        var labelsHora = Object.keys(ocorrenciasPorHora);
-        var valuesHora = Object.values(ocorrenciasPorHora);
-
-        Plotly.newPlot('chartHorarios', [{
-            x: labelsHora,
-            y: valuesHora,
-            type: 'bar',
-            marker: { color: 'red' }
-        }], {
-            title: 'Ocorrências por Horário',
-            xaxis: { title: 'Hora do Dia' },
-            yaxis: { title: 'Número de Ocorrências' }
-        });
-
-        // 🗺️ Criar o Mapa de Monitoramento
         var map = L.map("map").setView([-22.9068, -43.1729], 10);
         L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution: "© OpenStreetMap contributors"
         }).addTo(map);
 
-        // 📌 Obter os dados de localização
         var localizacoes = JSON.parse('{{ localizacoes | tojson }}');
 
-        // 🗺️ Criar um Mapa de Calor
-        var heatArray = localizacoes.map(loc => [loc[0], loc[1], 0.5]);
-        L.heatLayer(heatArray, { radius: 25, blur: 15 }).addTo(map);
+        if (localizacoes.length > 0) {
+            var heatArray = localizacoes.map(loc => [loc.latitude, loc.longitude, 0.5]);
+            L.heatLayer(heatArray, { radius: 25, blur: 15 }).addTo(map);
 
-        // 📌 Criar Clusterização dos Crimes
-        var markers = L.markerClusterGroup();
-        localizacoes.forEach(coord => {
-            var marker = L.marker([coord[0], coord[1]]);
-            markers.addLayer(marker);
-        });
-        map.addLayer(markers);
+            var markers = L.markerClusterGroup();
+            localizacoes.forEach(coord => {
+                var marker = L.marker([coord.latitude, coord.longitude])
+                    .bindPopup(`<b>Ocorrência</b><br>Tipo: ${coord.tipo_objeto}<br>Local: ${coord.cidade}`);
+                markers.addLayer(marker);
+            });
+
+            map.addLayer(markers);
+        }
+
+        // 📊 Verifica se os gráficos têm dados antes de renderizar
+        if (Object.keys(ocorrencias_por_mes).length > 0) {
+            Plotly.newPlot("chartOcorrencias", [{
+                x: Object.keys(ocorrencias_por_mes),
+                y: Object.values(ocorrencias_por_mes),
+                type: "bar",
+                marker: { color: "#007bff" }
+            }], { title: "Ocorrências por Mês", xaxis: { title: "Mês" }, yaxis: { title: "Quantidade" } });
+        } else {
+            document.getElementById("chartOcorrencias").innerHTML = "<p class='text-center'>🚫 Sem dados disponíveis.</p>";
+        }
+
+        if (Object.keys(ocorrencias_por_hora).length > 0) {
+            Plotly.newPlot("chartHorarios", [{
+                x: Object.keys(ocorrencias_por_hora),
+                y: Object.values(ocorrencias_por_hora),
+                type: "bar",
+                marker: { color: "#dc3545" }
+            }], { title: "Ocorrências por Horário", xaxis: { title: "Hora do Dia" }, yaxis: { title: "Quantidade" } });
+        } else {
+            document.getElementById("chartHorarios").innerHTML = "<p class='text-center'>🚫 Sem dados disponíveis.</p>";
+        }
+
+        if (Object.keys(tipo_mais_comum).length > 0) {
+            Plotly.newPlot("chartObjetos", [{
+                labels: Object.keys(tipo_mais_comum),
+                values: Object.values(tipo_mais_comum),
+                type: "pie",
+                marker: { colors: ["#ff5733", "#33ff57", "#3357ff", "#ff33a6", "#57ff33"] }
+            }], { title: "Tipo de Objeto Mais Roubado" });
+        } else {
+            document.getElementById("chartObjetos").innerHTML = "<p class='text-center'>🚫 Sem dados disponíveis.</p>";
+        }
     </script>
 {% endblock %}

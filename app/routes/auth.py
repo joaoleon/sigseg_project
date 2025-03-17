@@ -8,23 +8,22 @@ from app.extensions import db
 auth_bp = Blueprint("auth", __name__)
 
 # 📌 🔹 Cadastro de Usuário (Registro)
+
 @auth_bp.route("/register", methods=["GET", "POST"])
 def register():
-    if request.method == "GET":
-        return render_template("register.html", usuario_logado=False)
+    if request.method == "POST":
+        data = request.form.to_dict() if request.form else request.get_json()  # Captura os dados do formulário ou JSON
+        
+        response, status = registrar_usuario(data)  # Chama o serviço
+        
+        if status == 201:
+            flash(response["mensagem"], "success")
+            return redirect(response["redirect_url"])
+        else:
+            flash(response["erro"], "danger")
+            return render_template("register.html"), status  # Retorna a página com erro
 
-    # Converte `request.form` para um dicionário comum
-    data = request.form.to_dict()
-
-    response, status = registrar_usuario(data)
-
-    if status == 201:  # Cadastro bem-sucedido
-        flash("Cadastro realizado com sucesso! Faça login para continuar.", "success")
-        return redirect(url_for("auth.login"))
-
-    flash(response.get("erro", "Erro ao registrar usuário."), "danger")
-    return redirect(url_for("auth.register"))
-
+    return render_template("register.html")  # Exibe o formulário no GET
 # 📌 🔹 Login de Usuário
 @auth_bp.route("/login", methods=["GET", "POST"])
 def login():
@@ -114,7 +113,7 @@ def upload_foto():
 
 # 📌 🔹 Status de Autenticação
 
-@auth_bp.route("/auth/status", methods=["GET"])
+@auth_bp.route("/status", methods=["GET"])
 @jwt_required(locations=["cookies"])  # ✅ Agora verifica os cookies corretamente
 def auth_status():
     user_id = get_jwt_identity()

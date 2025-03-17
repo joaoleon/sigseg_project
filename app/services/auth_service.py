@@ -5,7 +5,10 @@ from app.extensions import db
 from app.models.usuario import Usuario
 
 # 📌 Cadastro de Usuário
+
 def registrar_usuario(data):
+    """Registra um novo usuário no banco de dados."""
+
     required_fields = ["nome", "email", "senha", "cpf"]
     for field in required_fields:
         if not data.get(field):
@@ -14,11 +17,13 @@ def registrar_usuario(data):
     email = data["email"].strip().lower()
     cpf = data["cpf"].strip()
 
+    # 🔹 Validação para evitar e-mails e CPFs duplicados
     if Usuario.query.filter_by(email=email).first():
         return {"erro": "E-mail já cadastrado"}, 409
     if Usuario.query.filter_by(cpf=cpf).first():
         return {"erro": "CPF já cadastrado"}, 409
 
+    # 🔹 Criando um novo usuário
     novo_usuario = Usuario(
         nome=data["nome"].strip(),
         email=email,
@@ -29,8 +34,8 @@ def registrar_usuario(data):
         cidade=data.get("cidade"),
         estado=data.get("estado")
     )
-    
-    # 🔥 Certifique-se de que a senha está sendo criptografada corretamente antes de salvar
+
+    # 🔥 Certifique-se de que a senha está sendo criptografada corretamente
     novo_usuario.set_senha(data["senha"])  
 
     db.session.add(novo_usuario)

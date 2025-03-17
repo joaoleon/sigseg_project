@@ -4,19 +4,20 @@
 
 {% block content %}
 <div class="container my-5">
-    <h2 class="text-center mb-4">Perguntas Frequentes (FAQ)</h2>
-    <p class="text-center text-muted">Dúvidas sobre o SIG-Seg? Veja as respostas para as perguntas mais comuns.</p>
+    <h2 class="text-center mb-4">Perguntas Frequentes</h2>
+    <p class="text-center text-muted">Confira as respostas para as dúvidas mais comuns sobre o SIG-Seg.</p>
 
     <div class="accordion" id="faqAccordion">
+        <!-- 📌 Cadastro e Uso -->
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
-                    📌 Como posso registrar um objeto roubado?
+                    Como registrar um objeto roubado?
                 </button>
             </h2>
             <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                    Basta clicar em "Registrar Objeto", preencher as informações e anexar fotos. Seu registro ajudará na recuperação do item!
+                    Basta acessar a seção <strong>"Registrar Objeto"</strong>, preencher os detalhes como nome, tipo, local e data do roubo e anexar fotos. Seu registro ajudará na recuperação do item.
                 </div>
             </div>
         </div>
@@ -24,12 +25,12 @@
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
-                    🧠 Como a Inteligência Artificial ajuda na recuperação?
+                    Como meus dados são protegidos no SIG-Seg?
                 </button>
             </h2>
             <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                    A IA analisa padrões de roubo e cruza informações com dados de registros e denúncias para identificar objetos recuperados.
+                    O SIG-Seg utiliza <strong>criptografia e protocolos seguros</strong> para proteger suas informações. Seus dados não são compartilhados sem autorização.
                 </div>
             </div>
         </div>
@@ -37,12 +38,66 @@
         <div class="accordion-item">
             <h2 class="accordion-header">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
-                    🔔 Serei notificado se meu item for encontrado?
+                    Como serei notificado se meu item for encontrado?
                 </button>
             </h2>
             <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                 <div class="accordion-body">
-                    Sim! Caso o seu item seja localizado, você receberá um alerta e poderá buscá-lo na delegacia mais próxima.
+                    Você receberá um alerta por e-mail e no painel do SIG-Seg, com as instruções para recuperação do item.
+                </div>
+            </div>
+        </div>
+
+        <!-- 📌 Tecnologia e Integração -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                    Como a Inteligência Artificial ajuda na recuperação dos objetos?
+                </button>
+            </h2>
+            <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    O SIG-Seg analisa padrões de roubos e cruza informações com registros públicos e privados para identificar possíveis objetos recuperados.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq5">
+                    O SIG-Seg tem integração com a polícia e seguradoras?
+                </button>
+            </h2>
+            <div id="faq5" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Estamos trabalhando para permitir que autoridades e seguradoras acessem registros de forma segura, acelerando investigações e processos de indenização.
+                </div>
+            </div>
+        </div>
+
+        <!-- 📌 Segurança e Privacidade -->
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq6">
+                    Posso denunciar fraudes ou informações falsas?
+                </button>
+            </h2>
+            <div id="faq6" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Sim. Se encontrar um registro suspeito, você pode denunciá-lo pelo próprio SIG-Seg. Nossa equipe analisará o caso e tomará as medidas cabíveis.
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq7">
+                    Meus registros são públicos?
+                </button>
+            </h2>
+            <div id="faq7" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                <div class="accordion-body">
+                    Apenas informações básicas são acessíveis para consultas públicas. Seus dados pessoais são protegidos e acessíveis apenas por você.
                 </div>
             </div>
         </div>
